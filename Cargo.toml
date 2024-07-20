@@ -1,0 +1,15 @@
+[package]
+name = "katex-rquickjs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[dependencies.rquickjs]
+version = "0.6.2"
+default-features = false
+features = ["futures", "rust-alloc", "loader", "dyn-load"]
+
+[features]
+default = ["macro"]
+macro = ["rquickjs/macro"]
