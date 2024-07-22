@@ -1,8 +1,8 @@
-use rquickjs::{embed, loader::Bundle, Context, Ctx, Function, Module, Object, Runtime};
+use rquickjs::{embed, loader::Bundle, Context, Ctx, Module, Object, Runtime};
 use std::cell::RefCell;
 
 static BUNDLE: Bundle = embed! {
-    "hi": "hi.js",
+    "katex": "target/katex-js-release/katex.mjs",
 };
 
 fn init_ctx() -> Context {
@@ -16,16 +16,16 @@ thread_local! {
     static CONTEXT: RefCell<Context> = RefCell::new(init_ctx());
 }
 
-pub fn hi(name: String) -> String {
+pub fn get_version() -> String {
     CONTEXT.with_borrow(|context| {
         context.with(|context: Ctx| -> String {
-            Module::import(&context, "hi")
+            Module::import(&context, "katex")
                 .unwrap()
                 .finish::<Object>()
                 .unwrap()
-                .get::<_, Function>("hi")
+                .get::<_, Object>("default")
                 .unwrap()
-                .call::<_, String>((name,))
+                .get::<_, String>("version")
                 .unwrap()
         })
     })
@@ -33,5 +33,5 @@ pub fn hi(name: String) -> String {
 
 #[test]
 fn test() {
-    assert_eq!(hi("Jawad".to_string()), "Hi Jawad!");
+    assert_eq!(get_version(), "0.16.11");
 }
