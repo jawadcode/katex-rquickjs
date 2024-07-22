@@ -1,20 +1,14 @@
-use rquickjs::{
-    loader::{BuiltinLoader, BuiltinResolver},
-    Context, Ctx, Function, Module, Object, Runtime,
-};
+use rquickjs::{embed, loader::Bundle, Context, Ctx, Function, Module, Object, Runtime};
 use std::cell::RefCell;
 
-const SCRIPT_MODULE: &'static str = "export const hi = name => `Hi ${name}!`;";
+static BUNDLE: Bundle = embed! {
+    "hi": "hi.js",
+};
 
 fn init_ctx() -> Context {
-    let resolver = BuiltinResolver::default().with_module("hi");
-    let loader = BuiltinLoader::default().with_module("hi", SCRIPT_MODULE);
-
     let runtime = Runtime::new().unwrap();
     let context = Context::full(&runtime).unwrap();
-
-    runtime.set_loader(resolver, loader);
-
+    runtime.set_loader(BUNDLE, BUNDLE);
     context
 }
 
