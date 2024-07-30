@@ -7,10 +7,6 @@ edition = "2021"
 rquickjs = { version = "0.6.2", features = [ "loader", "macro", "properties" ] }
 include_dir = "0.7.4"
 
-[features]
-default = ["macro"]
-macro = ["rquickjs/macro"]
-
 [build-dependencies]
 reqwest = { version = "0.12", features = [ "blocking", "json" ] }
 serde = { version = "1.0", features = [ "derive" ] }
